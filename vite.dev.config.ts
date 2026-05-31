@@ -70,6 +70,10 @@ export default defineConfig({
         __dirname,
         "../packages/easy-email-pro-plugins/src",
       ),
+      "easy-email-pro-migrations": path.resolve(
+        __dirname,
+        "../packages/easy-email-pro-migrations/src",
+      ),
       "easy-email-pro-asset-manager": path.resolve(
         __dirname,
         "../packages/easy-email-pro-asset-manager/src",

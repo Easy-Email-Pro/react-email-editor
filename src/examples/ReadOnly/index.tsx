@@ -162,7 +162,7 @@ const ConfigurationCard = () => {
   );
 };
 
-function NavbarLink({ index, path }: { index: number; path: Path }) {
+function NavbarLink({ index, path }: { index: number; path: Path; }) {
   return (
     <div className="NavbarLink">
       <div style={{ marginTop: 10 }} />
@@ -225,6 +225,8 @@ const PreviewEmailContainer = () => {
           values={values}
           mergetagsData={mergetagsData}
           pageDataVariables={pageDataVariables}
+          displayMode="html"
+          widgetMode={false}
         />
       </div>
     </div>

@@ -44,6 +44,7 @@ import { EmailList } from "./EmailList";
 import { Node } from "slate";
 import { useNavigate } from "react-router-dom";
 import { mjml2amp, getImageUrlsForAmp } from "mjml2amp";
+import { importUnlayerDesign } from "@/utils/importUnlayerTemplate";
 
 /**
  * Load each image URL and resolve with its natural width and height.
@@ -160,7 +161,7 @@ export const EditorHeader = (props: {
         [JSON.stringify(pick(values, ["content", "subject"]), null, 2)],
         { type: "application/json" }
       ),
-      "easy-email-pro.json"
+      values.subject
     );
   };
 
@@ -378,6 +379,53 @@ export const EditorHeader = (props: {
     });
   };
 
+  const onImportUnlayerJSON = async () => {
+    const uploader = new Uploader(() => Promise.resolve(""), {
+      accept: "application/json",
+      limit: 1,
+    });
+
+    try {
+      const [file] = await uploader.chooseFile();
+      const reader = new FileReader();
+      const { template, warnings } = await new Promise<ReturnType<
+        typeof importUnlayerDesign
+      >>((resolve, reject) => {
+        reader.onload = function (evt) {
+          if (!evt.target) {
+            reject();
+            return;
+          }
+          try {
+            const design = JSON.parse(evt.target.result as any);
+            resolve(importUnlayerDesign(design, file.name));
+          } catch (error) {
+            console.log(error);
+            reject(error);
+          }
+        };
+        reader.readAsText(file);
+      });
+
+      reset({
+        subject: template.subject,
+        content: template.content,
+      });
+
+      if (warnings.length > 0) {
+        Message.warning(
+          `Imported with ${warnings.length} migration warning${
+            warnings.length > 1 ? "s" : ""
+          }.`
+        );
+      } else {
+        Message.success("Unlayer JSON imported");
+      }
+    } catch (error) {
+      Message.error("Invalid Unlayer JSON template");
+    }
+  };
+
   const onSwitchTemplate = (item: {
     id: string;
     subject: string;
@@ -450,7 +498,7 @@ export const EditorHeader = (props: {
                   </Button>
                 </Tooltip>
 
-                {!props.hideImport && (
+                {!props.hideImport && isDev && (
                   <Dropdown
                     droplist={
                       <Menu>
@@ -479,6 +527,12 @@ export const EditorHeader = (props: {
                               onClick={onImportEasyEmailJSON}
                             >
                               Import from Easy Email JSON
+                            </Menu.Item>
+                            <Menu.Item
+                              key="Unlayer JSON"
+                              onClick={onImportUnlayerJSON}
+                            >
+                              Import from Unlayer JSON
                             </Menu.Item>
                           </>
                         )}

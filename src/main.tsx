@@ -23,6 +23,7 @@ const getClientId = () => {
 };
 
 const Full = React.lazy(() => import("./examples/Full/index"));
+const AIAgent = React.lazy(() => import("./examples/AIAgent/index"));
 const AMP = React.lazy(() => import("./examples/AMP/index"));
 const Simple = React.lazy(() => import("./examples/Simple/index"));
 const Customize = React.lazy(() => import("./examples/Customize/index"));
@@ -121,9 +122,9 @@ export const navigation = [
     element: <DynamicData />,
   },
   {
-    name: "AI Assistant demo",
-    path: "/ai-assistant",
-    element: <Full />,
+    name: "AI Agent",
+    path: "/ai-agent",
+    element: <AIAgent />,
   },
   {
     name: "Studio",

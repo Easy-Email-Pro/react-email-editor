@@ -1,68 +1,81 @@
-## Getting Started
+# Easy Email Pro Demo - React Email Editor
 
-Easy-email-pro simplifies the creation of responsive email templates by combining the editing capabilities of SlateJS with the compatibility of MJML. With drag-and-drop functionality, inline editing, and keyboard shortcuts, users can easily design visually appealing and feature-rich email templates.
+Easy Email Pro is a drag-and-drop email template editor for building responsive HTML emails, marketing campaigns, newsletters, and transactional email templates. It combines the editing experience of SlateJS with MJML email rendering, so teams can create professional email templates with inline editing, reusable blocks, keyboard shortcuts, preview, and mobile-friendly output.
 
-Build marketing campaigns, newsletters, or transactional emails effortlessly with Easy-email-pro. Create professional-grade responsive email templates efficiently.
+Visit the official website for product details, pricing, and integration guides: [https://www.easyemail.pro/](https://www.easyemail.pro/)
 
 ## Live Demo
 
-Check out the live demo here https://demo.easyemail.pro/full
+Try the hosted email editor demo: [https://demo.easyemail.pro/full](https://demo.easyemail.pro/full)
+
+Documentation: [https://docs.easyemail.pro/docs/intro](https://docs.easyemail.pro/docs/intro)
 
 <div style="font-size:0">
-  <img src="./desktop.png" style="display:inline-block;width:48%;margin-right:2%" />
-  <img src="./mobile.png" style="display:inline-block;width:48%" />
+  <img src="./desktop.png" alt="Easy Email Pro desktop email editor demo" style="display:inline-block;width:48%;margin-right:2%" />
+  <img src="./mobile.png" alt="Easy Email Pro responsive mobile email preview" style="display:inline-block;width:48%" />
 </div>
 <br/>
 <div>
-  <img src="./templates.png" style="display:inline-block;width:98%"/>
+  <img src="./templates.png" alt="Easy Email Pro email template gallery" style="display:inline-block;width:98%"/>
 </div>
 
-### Update client id
+## Why Easy Email Pro
 
-Modify the following in vite.config.ts", free user use client id
-"FREE"
+- Build responsive HTML email templates with MJML compatibility.
+- Use a React email editor with drag-and-drop blocks and inline content editing.
+- Create marketing emails, newsletters, product emails, and transactional email templates.
+- Preview desktop and mobile layouts while editing.
+- Integrate the editor into React, Vue, Next.js, iframe, or pure JavaScript projects.
+
+## Run This Demo Locally
+
+Install dependencies:
 
 ```bash
-
-"process.env.CLIENT_ID": JSON.stringify('your client id'),
-
-```
-
-```bash
-
 pnpm install
-
-pnpm dev
-
 ```
 
-### Open http://localhost:3000/simple
+Start the development server:
+
+```bash
+pnpm dev
+```
+
+Open the simple demo:
+
+```text
+http://localhost:3000/simple
+```
+
+## Update Client ID
+
+For the free demo client, use `FREE`. To use your own client ID, update `vite.config.ts`:
+
+```ts
+"process.env.CLIENT_ID": JSON.stringify("your client id"),
+```
 
 ## Pure JavaScript Integration
 
-If you want to integrate Easy-email-pro using pure JavaScript without any framework, follow these steps:
-
-1. First, build the standalone version:
+If you want to integrate Easy Email Pro without a framework, build the standalone version first:
 
 ```bash
 npm run build:iife
 ```
 
-This will generate two files in the `build` directory:
+This generates two files in the `build` directory:
 
 - `easy-email-pro.js`
 - `style.css`
 
-2. Copy these files to your project's assets directory.
-
-3. Include the files in your HTML:
+Copy these files to your project's assets directory, then include them in your HTML:
 
 ```html
 <link rel="stylesheet" href="./build/style.css" />
 <script src="./build/easy-email-pro.js"></script>
 ```
 
-4. Initialize the editor:
+Initialize the editor:
 
 ```html
 <div id="editor"></div>
@@ -72,14 +85,20 @@ This will generate two files in the `build` directory:
     height: "calc(100vh - 50px)",
     initialValues: yourTemplate,
     onUpload: (file) => {
-      // Implement your file upload logic here
       return Promise.resolve(uploadedFileUrl);
     },
   });
 </script>
 ```
 
-For a complete example, check out our [pure HTML implementation](./pure.html).
+For a complete example, see the [pure HTML implementation](./pure.html).
 
-We also have examples of Vue, nextjs and iframe integration, which you can find here
-(All examples)[https://github.com/orgs/Easy-Email-Pro/repositories]
+## More Examples
+
+Easy Email Pro also includes examples for Vue, Next.js, iframe integration, and other embedding patterns:
+
+[https://github.com/orgs/Easy-Email-Pro/repositories](https://github.com/orgs/Easy-Email-Pro/repositories)
+
+## Official Website
+
+Learn more about the Easy Email Pro responsive email editor, MJML email builder, and email template design workflow at [https://www.easyemail.pro/](https://www.easyemail.pro/).

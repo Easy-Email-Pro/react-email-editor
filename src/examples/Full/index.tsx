@@ -7,6 +7,7 @@ import {
 import {
   EditorContextProps,
   Retro,
+  SharedComponents,
   ThemeConfigProps,
 } from "easy-email-pro-theme";
 import "easy-email-pro-theme/lib/style.css";
@@ -80,10 +81,12 @@ import "./ElementStyleGallery";
 import { TranslationSelect } from "@/components/TranslationSelect";
 import { Sparkles, Layout as LayoutIcon, Palette, Zap } from "lucide-react";
 import { prebuiltBlocks } from "./prebuiltBlocks";
-import { categories } from './categories';
+import { categories } from "./categories";
+import { DemoAiAgent } from "../AIAgent/DemoAiAgent";
+import { fetchWebsiteTemplateInitialValues } from "./websiteTemplateLoader";
+import { useCompactMode } from "@/hooks/useCompactMode";
 
 const EmailSize = React.lazy(() => import("@/components/EmailSize"));
-
 
 const fonts = [
   {
@@ -157,158 +160,61 @@ const fonts = [
   },
 ];
 
-const optionsList = [
-  {
-    label: "Ask AI",
-    value: "Ask AI",
-    getMessages(text: string) {
-      return [
-        {
-          role: "system",
-          content: "Answer the question based on the context below.",
-        },
-        {
-          role: "system",
-          content: "The response should be in HTML format.",
-        },
-        {
-          role: "system",
-          content:
-            "The response should preserve any HTML formatting, links, and styles in the context.",
-        },
-      ];
-    },
-  },
-  {
-    label: "Summarize content",
-    value: "Summarize content",
-    getMessages(text: string) {
-      return [
-        {
-          role: "system",
-          content: "Answer the question based on the context below.",
-        },
-        {
-          role: "system",
-          content: "The response should be in HTML format.",
-        },
-        {
-          role: "system",
-          content:
-            "The response should preserve any HTML formatting, links, and styles in the context.",
-        },
-        {
-          role: "user",
-          content: `Question: Provide the key points and concepts in this content in a succinct summary. Context: ${text}`,
-        },
-      ];
-    },
-  },
-  {
-    label: "Improve writing",
-    value: "Improve writing",
-    getMessages(text: string) {
-      return [
-        {
-          role: "system",
-          content: "Answer the question based on the context below.",
-        },
-        {
-          role: "system",
-          content: "The response should be in HTML format.",
-        },
-        {
-          role: "system",
-          content:
-            "The response should preserve any HTML formatting, links, and styles in the context.",
-        },
-        {
-          role: "user",
-          content: `Question: Rewrite this content with no spelling mistakes, proper grammar, and with more descriptive language, using best writing practices without losing the original meaning. Context: ${text}`,
-        },
-      ];
-    },
-  },
-  {
-    label: "Simplify language",
-    value: "Simplify language",
-    getMessages(text: string) {
-      return [
-        {
-          role: "system",
-          content: "Answer the question based on the context below.",
-        },
-        {
-          role: "system",
-          content: "The response should be in HTML format.",
-        },
-        {
-          role: "system",
-          content:
-            "The response should preserve any HTML formatting, links, and styles in the context.",
-        },
-        {
-          role: "user",
-          content: `Question: Rewrite this content with simplified language and reduce the complexity of the writing, so that the content is easier to understand. Context: ${text}`,
-        },
-      ];
-    },
-  },
-  {
-    label: "Expand upon",
-    value: "Expand upon",
-    getMessages(text: string) {
-      return [
-        {
-          role: "system",
-          content: "Answer the question based on the context below.",
-        },
-        {
-          role: "system",
-          content: "The response should be in HTML format.",
-        },
-        {
-          role: "system",
-          content:
-            "The response should preserve any HTML formatting, links, and styles in the context.",
-        },
-        {
-          role: "user",
-          content: `Question: Expand upon this content with descriptive language and more detailed explanations, to make the writing easier to understand and increase the length of the content. Context: ${text}`,
-        },
-      ];
-    },
-  },
-  {
-    label: "Trim content",
-    value: "Trim content",
-    getMessages(text: string) {
-      return [
-        {
-          role: "system",
-          content: "Answer the question based on the context below.",
-        },
-        {
-          role: "system",
-          content: "The response should be in HTML format.",
-        },
-        {
-          role: "system",
-          content:
-            "The response should preserve any HTML formatting, links, and styles in the context.",
-        },
-        {
-          role: "user",
-          content: `Question: Remove any repetitive, redundant, or non-essential writing in this content without changing the meaning or losing any key information. Context: ${text}`,
-        },
-      ];
-    },
-  },
-];
-
 const MODERN_THEME_PROMO_KEY = "modern-theme-promo-shown";
 
-export default function MyEditor() {
+SharedComponents.AiAgent = DemoAiAgent;
+
+function getDefaultInitialValues(): EmailTemplate {
+  return {
+    subject: data.subject,
+    content: data.content as EmailTemplate["content"],
+  };
+}
+
+export default function EditorApp() {
+  const templateId = useMemo(
+    () => new URLSearchParams(window.location.search).get("id")?.trim() ?? "",
+    [],
+  );
+  const [templateLoading, setTemplateLoading] = useState(Boolean(templateId));
+  const [initialValues, setInitialValues] = useState<EmailTemplate | null>(
+    () => (templateId ? null : getDefaultInitialValues()),
+  );
+
+  useEffect(() => {
+    if (!templateId) return;
+
+    let cancelled = false;
+    setTemplateLoading(true);
+
+    fetchWebsiteTemplateInitialValues(templateId)
+      .then((template) => {
+        if (cancelled) return;
+        setInitialValues(template);
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        console.error(`Failed to load website template "${templateId}"`, error);
+        setInitialValues(getDefaultInitialValues());
+      })
+      .finally(() => {
+        if (cancelled) return;
+        setTemplateLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [templateId]);
+
+  if (templateLoading || !initialValues) {
+    return <FullScreenLoading isFullScreen />;
+  }
+
+  return <MyEditor initialValues={initialValues} />;
+}
+
+function MyEditor({ initialValues }: { initialValues: EmailTemplate; }) {
   const editorConfig = useEditorConfigStore();
   const { upload } = useUpload();
   const [accept, setAccept] = useState<string | undefined>(undefined);
@@ -316,7 +222,7 @@ export default function MyEditor() {
   const { universalElementSetting } = useUniversalElement();
   const [hoveringToolbarPosition, setHoveringToolbarPosition] =
     useState<NonNullable<ThemeConfigProps["hoveringToolbar"]>["follow"]>(
-      "container"
+      "container",
     );
 
   // Modern Theme promo modal state
@@ -368,24 +274,8 @@ export default function MyEditor() {
   });
 
   const [authState, setAuthState] = useState<"pending" | "success" | "fail">(
-    "pending"
+    "pending",
   );
-
-  const initialValues: EmailTemplate | null = useMemo(() => {
-    const stored = window.localStorage.getItem("html-to-mjml-result");
-    if (stored) {
-      window.localStorage.removeItem("html-to-mjml-result");
-      try {
-        const content = JSON.parse(stored);
-        return { subject: "Converted template", content };
-      } catch {}
-    }
-    return {
-      subject: data.subject,
-      content: data.content as EmailTemplate["content"],
-    };
-  }, []);
-
   const theme = editorConfig.theme;
   const matchThemeStyle = useMemo(() => {
     if (theme === "retro") {
@@ -441,7 +331,7 @@ export default function MyEditor() {
               messages: messages,
               model: "gpt-3.5-turbo",
             },
-          }
+          },
         );
         return { content: data.content, role: data.role };
       },
@@ -459,6 +349,7 @@ export default function MyEditor() {
       });
   }, []);
 
+  const compact = useCompactMode();
   const config = Retro.useCreateConfig({
     instanceRef: editorInstance,
     clientId: process.env.CLIENT_ID!,
@@ -484,7 +375,7 @@ export default function MyEditor() {
     showTextHTMLMode: true,
     showSelectFileButton: true,
     showGenerateBlockImage: true,
-    compact: editorConfig.compactMode,
+    compact: compact,
     handleUploadClick,
     universalElementSetting,
     localeData: get(localsData, editorConfig.language),
@@ -507,6 +398,19 @@ export default function MyEditor() {
     enabledGradientImage: true,
     enabledAutoComplete: true,
     prebuiltBlocks: prebuiltBlocks,
+    colorPicker: {
+      initialColors: [
+        "#000000",
+        "#FFFFFF",
+        "#9b9b9b",
+        "#d0021b",
+        "#4a90e2",
+        "#7ed321",
+        "#bd10e0",
+        "#f8e71c",
+      ],
+      autoExtractColors: true,
+    },
   });
 
   if (authState === "pending") {

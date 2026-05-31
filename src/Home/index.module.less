@@ -1,0 +1,241 @@
+.page {
+  min-height: calc(100vh - 64px);
+  padding: 48px 24px 72px;
+  background: #f5f7fb;
+}
+
+.content {
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.header {
+  max-width: 760px;
+  margin-bottom: 34px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 14px;
+  border: 1px solid #d9e4ff;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #2458f5;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  box-shadow: 0 8px 22px rgba(31, 80, 180, 0.08);
+}
+
+.title {
+  margin: 22px 0 14px;
+  color: #070b1f;
+  font-size: 48px;
+  font-weight: 780;
+  line-height: 1.08;
+}
+
+.subtitle {
+  max-width: 680px;
+  margin: 0;
+  color: #526079;
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.featureCard {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.78fr) minmax(520px, 1.22fr);
+  gap: 42px;
+  align-items: center;
+  min-height: 460px;
+  padding: 34px;
+  border: 1px solid #e3e8f2;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(22, 35, 66, 0.08);
+}
+
+.featureCopy {
+  padding: 12px 0 12px 8px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 12px;
+  border: 1px solid #dfe7ff;
+  border-radius: 999px;
+  background: #f6f8ff;
+  color: #2458f5;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.featureTitle {
+  margin: 20px 0 14px;
+  color: #070b1f;
+  font-size: 36px;
+  font-weight: 780;
+  line-height: 1.12;
+}
+
+.featureDescription {
+  max-width: 500px;
+  margin: 0;
+  color: #526079;
+  font-size: 17px;
+  line-height: 1.68;
+}
+
+.featureActions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 28px;
+}
+
+.primaryAction,
+.secondaryAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 128px;
+  height: 48px;
+  padding: 0 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 760;
+  text-decoration: none;
+  transition:
+    box-shadow 180ms ease,
+    transform 180ms ease,
+    border-color 180ms ease;
+}
+
+.primaryAction {
+  background: #2458f5;
+  color: #ffffff;
+  box-shadow: 0 14px 28px rgba(36, 88, 245, 0.22);
+}
+
+.secondaryAction {
+  border: 1px solid #d9e0ec;
+  background: #ffffff;
+  color: #1f2a3d;
+}
+
+.primaryAction:hover,
+.secondaryAction:hover {
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.primaryAction:hover {
+  box-shadow: 0 18px 36px rgba(36, 88, 245, 0.28);
+}
+
+.secondaryAction:hover {
+  border-color: #bfcadd;
+}
+
+.imageFrame {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 2 / 1;
+  padding: 12px;
+  border: 1px solid #e5eaf3;
+  border-radius: 14px;
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.72),
+      rgba(255, 255, 255, 0)
+    ),
+    #f3f6fb;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.featureImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+@media (max-width: 1000px) {
+  .title {
+    font-size: 40px;
+  }
+
+  .featureCard {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+
+  .imageFrame {
+    aspect-ratio: 2 / 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 30px 14px 48px;
+  }
+
+  .title {
+    font-size: 32px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .featureCard {
+    min-height: 0;
+    padding: 18px;
+    border-radius: 14px;
+  }
+
+  .featureCopy {
+    padding: 4px 0;
+  }
+
+  .featureTitle {
+    font-size: 28px;
+  }
+
+  .featureDescription {
+    font-size: 15px;
+  }
+
+  .featureActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primaryAction,
+  .secondaryAction {
+    width: 100%;
+  }
+
+  .imageFrame {
+    aspect-ratio: 2 / 1;
+  }
+}
