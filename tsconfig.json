@@ -34,8 +34,7 @@
       "easy-email-pro-theme": ["../packages/easy-email-pro-theme"],
       "easy-email-pro-editor": ["../packages/easy-email-pro-editor"],
       "easy-email-pro-modern": ["../packages/easy-email-pro-modern"],
-      "easy-email-pro-migrations": ["../packages/easy-email-pro-migrations/src"],
-      "@easy-email-pro-core/*": ["../packages/easy-email-pro-core/src/*"]
+      "easy-email-pro-migrations": ["../packages/easy-email-pro-migrations"]
     }
   },
   "include": ["./src"]

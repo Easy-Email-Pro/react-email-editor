@@ -19,10 +19,10 @@ export default defineConfig({
   ].filter(Boolean) as any,
   define: {
     "process.env.UNSPLASH_CLIENT_ID": JSON.stringify(
-      process.env.UNSPLASH_CLIENT_ID
+      process.env.UNSPLASH_CLIENT_ID,
     ),
     "process.env.CLIENT_ID": JSON.stringify(
-      env.parsed?.CLIENT_ID || process.env.CLIENT_ID
+      env.parsed?.CLIENT_ID || process.env.CLIENT_ID,
     ),
   },
   build: {
@@ -35,16 +35,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "mjml-browser": path.resolve("./node_modules/mjml-browser"),
-      "easy-email-pro-migrations": path.resolve(
-        __dirname,
-        "../packages/easy-email-pro-migrations/src",
-      ),
-      "@easy-email-pro-core": path.resolve(
-        __dirname,
-        "../packages/easy-email-pro-core/src",
-      ),
       "html-minifier-terser": path.resolve(
-        "./node_modules/html-minifier-terser/dist/htmlminifier.esm.bundle.js"
+        "./node_modules/html-minifier-terser/dist/htmlminifier.esm.bundle.js",
       ),
       "@": path.resolve("src"),
     },
